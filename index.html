@@ -8,8 +8,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Para Você ❤️">
-
-<!-- ÍCONE DO APP -->
 <link rel="apple-touch-icon" href="icon.png">
 
 <style>
@@ -67,6 +65,36 @@
     min-height: 60px;
   }
 
+  #botaoSurpresa {
+    display: none;
+    padding: 12px 20px;
+    font-size: 20px;
+    border: none;
+    border-radius: 15px;
+    background: #ff69b4;
+    color: white;
+    cursor: pointer;
+    margin-top: 20px;
+    box-shadow: 0 0 15px rgba(255,105,180,0.7);
+  }
+
+  #fotoSurpresa {
+    display: none;
+    width: 80%;
+    max-width: 350px;
+    margin-top: 20px;
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(255,0,150,0.5);
+  }
+
+  #fraseSurpresa {
+    display: none;
+    font-family: 'Brush Script MT', cursive;
+    font-size: 28px;
+    color: #ffb6e6;
+    margin-top: 20px;
+  }
+
   .heart {
     position: absolute;
     bottom: -20px;
@@ -90,6 +118,9 @@
 <div id="content">
   <img id="foto" src="foto1.jpg">
   <div id="final"></div>
+  <button id="botaoSurpresa" onclick="mostrarSurpresa()">Clique aqui para a surpresa 💖</button>
+  <img id="fotoSurpresa" src="fotoSurpresa.jpg">
+  <div id="fraseSurpresa">Ansioso para esse dia</div>
 </div>
 
 <audio id="music">
@@ -109,6 +140,8 @@
     const img = new Image();
     img.src = `foto${i}.jpg`;
   }
+  const imgSurpresa = new Image();
+  imgSurpresa.src = "fotoSurpresa.jpg";
 
   function startApp() {
     document.getElementById("start").style.display = "none";
@@ -170,15 +203,15 @@
       if (i >= frase.length) {
         clearInterval(typing);
         fadeOutMusica();
+        // Mostrar botão surpresa
+        document.getElementById("botaoSurpresa").style.display = "inline-block";
       }
     }, 80);
   }
 
-  // FADE-OUT DA MÚSICA
   function fadeOutMusica() {
     const audio = document.getElementById("music");
     let vol = audio.volume;
-
     const fadeOut = setInterval(() => {
       if (vol > 0.05) {
         vol -= 0.05;
@@ -221,9 +254,17 @@
       }, i * 150);
     }
   }
+
+  // FUNÇÃO BOTÃO SURPRESA
+  function mostrarSurpresa() {
+    document.getElementById("botaoSurpresa").style.display = "none";
+    document.getElementById("fotoSurpresa").style.display = "block";
+    document.getElementById("fraseSurpresa").style.display = "block";
+  }
 </script>
 
 </body>
 </html>
+
 
 
