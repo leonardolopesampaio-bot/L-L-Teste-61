@@ -2,28 +2,34 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Teste Botão</title>
+<title>Teste Música</title>
 <style>
-body { margin:0; height:100vh; display:flex; justify-content:center; align-items:center; background:#000; color:#fff; font-size:30px; }
+body { margin:0; height:100vh; display:flex; justify-content:center; align-items:center; background:#000; color:#fff; font-size:30px; flex-direction:column; }
 #start { cursor:pointer; padding:20px 40px; background:#ff69b4; border-radius:20px; }
-#content { display:none; color:#fff; font-size:24px; margin-top:20px; text-align:center; }
+#content { display:none; margin-top:20px; font-size:24px; text-align:center; color:#fff; }
 </style>
 </head>
 <body>
 
 <div id="start" onclick="startApp()">💖 Toque para começar 💖</div>
-<div id="content">O conteúdo apareceu!</div>
+<div id="content">Música iniciada!</div>
+
+<audio id="music" src="musica.mp3"></audio>
 
 <script>
 function startApp(){
   document.getElementById("start").style.display="none";
   document.getElementById("content").style.display="block";
-  alert("Função startApp() executada!");
+
+  const audio = document.getElementById("music");
+  audio.currentTime = 23; // começa do segundo 23
+  audio.play().catch(() => console.log("Toque necessário para liberar áudio"));
 }
 </script>
 
 </body>
 </html>
+
 
 
 
