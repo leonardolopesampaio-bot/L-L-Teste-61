@@ -2,120 +2,29 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Nós dois ❤️</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teste Botão</title>
 <style>
-body {
-  margin:0;
-  height:100vh;
-  background: linear-gradient(180deg,#0a0a0a,#20001a);
-  color:#fff;
-  font-family: Arial, sans-serif;
-  text-align:center;
-  overflow:hidden;
-  position:relative;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-}
-#start {
-  cursor:pointer;
-  padding:20px 40px;
-  background:#ff69b4;
-  border-radius:20px;
-  font-size:28px;
-  z-index:100;
-  position:relative;
-}
-#content { display:none; position:relative; z-index:10; padding-top:20px; }
-img { width:85%; max-width:340px; max-height:60vh; object-fit:contain; border-radius:20px; opacity:0; transition:opacity 1.5s ease-in-out; }
-img.show { opacity:1; }
-#final { display:none; font-size:26px; margin:20px; color:#ffb6e6; min-height:60px; }
-#botaoSurpresa { display:none; padding:12px 20px; font-size:20px; border:none; border-radius:15px; background:#ff69b4; color:white; cursor:pointer; margin-top:20px; z-index:50; position:relative; }
-#fotoSurpresa { display:none; width:80%; max-width:350px; margin-top:20px; border-radius:20px; opacity:0; transition:opacity 1s; }
-#fraseSurpresa { display:none; font-family:'Brush Script MT',cursive; font-size:28px; color:#ffb6e6; margin-top:20px; }
-.heart { position:absolute; bottom:-20px; animation:float 8s linear infinite; pointer-events:none; z-index:1; }
-@keyframes float { from{transform:translateY(0);opacity:1} to{transform:translateY(-110vh);opacity:0} }
+body { margin:0; height:100vh; display:flex; justify-content:center; align-items:center; background:#000; color:#fff; font-size:30px; }
+#start { cursor:pointer; padding:20px 40px; background:#ff69b4; border-radius:20px; }
+#content { display:none; color:#fff; font-size:24px; margin-top:20px; text-align:center; }
 </style>
 </head>
 <body>
 
 <div id="start" onclick="startApp()">💖 Toque para começar 💖</div>
-
-<div id="content">
-  <img id="foto" src="foto1.jpg">
-  <div id="final"></div>
-  <button id="botaoSurpresa" onclick="mostrarSurpresa()">Clique aqui para a surpresa 💖</button>
-  <img id="fotoSurpresa" src="fotoSurpresa.jpg">
-  <div id="fraseSurpresa">Ansioso para esse dia</div>
-</div>
-
-<audio id="music" src="musica.mp3"></audio>
+<div id="content">O conteúdo apareceu!</div>
 
 <script>
-const totalFotos=6;
-const tempoFoto=3500;
-const frase="Você é minha vida, eu te amo!";
-let index=1;
-let fotosInterval;
-let fraseMostrada=false;
-
-// Pré-carregamento das imagens
-for(let i=1;i<=totalFotos;i++){ new Image().src=`foto${i}.jpg`; }
-new Image().src="fotoSurpresa.jpg";
-
 function startApp(){
   document.getElementById("start").style.display="none";
   document.getElementById("content").style.display="block";
-  iniciarMusica();
-  iniciarFotos();
-  iniciarCoracoes();
+  alert("Função startApp() executada!");
 }
+</script>
 
-function iniciarMusica(){
-  const audio=document.getElementById("music");
-  audio.currentTime=23;
-  audio.play().catch(()=>console.log("Toque necessário para liberar áudio"));
-}
+</body>
+</html>
 
-function iniciarFotos(){
-  const img=document.getElementById("foto");
-  img.classList.add("show");
-  fotosInterval=setInterval(()=>{
-    index++;
-    if(index<=totalFotos){
-      img.classList.remove("show");
-      setTimeout(()=>{ img.src=`foto${index}.jpg`; img.classList.add("show"); },500);
-    } else {
-      clearInterval(fotosInterval);
-      mostrarFrase();
-      efeitoFinal();
-    }
-  },tempoFoto);
-}
-
-function mostrarFrase(){
-  if(fraseMostrada) return;
-  fraseMostrada=true;
-  const el=document.getElementById("final");
-  el.style.display="block";
-  let i=0;
-  const typing=setInterval(()=>{
-    el.innerHTML+=frase.charAt(i);
-    i++;
-    if(i>=frase.length){ clearInterval(typing); document.getElementById("botaoSurpresa").style.display="inline-block"; }
-  },80);
-}
-
-function iniciarCoracoes(){
-  setInterval(()=>criarCoracao(Math.random()*window.innerWidth,window.innerHeight),600);
-}
-
-document.addEventListener("click",(e)=>criarCoracao(e.clientX,e.clientY));
-
-function criarCoracao(x,y){
-  const heart=
 
 
 
