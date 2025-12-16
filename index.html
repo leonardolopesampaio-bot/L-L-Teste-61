@@ -19,6 +19,7 @@
     font-family: Arial, sans-serif;
     text-align: center;
     overflow: hidden;
+    position: relative;
   }
 
   #start {
@@ -29,8 +30,8 @@
     font-size: 28px;
     cursor: pointer;
     animation: pulse 2s infinite;
-    z-index: 30;
     position: relative;
+    z-index: 100;
   }
 
   @keyframes pulse {
@@ -43,7 +44,7 @@
     display: none;
     padding-top: 40px;
     position: relative;
-    z-index: 5;
+    z-index: 10;
   }
 
   img {
@@ -80,8 +81,9 @@
     cursor: pointer;
     margin-top: 20px;
     box-shadow: 0 0 15px rgba(255,105,180,0.7);
-    z-index: 20;
+    z-index: 50;
     position: relative;
+    pointer-events: auto;
   }
 
   #fotoSurpresa {
@@ -92,6 +94,7 @@
     border-radius: 20px;
     box-shadow: 0 0 25px rgba(255,0,150,0.5);
     transition: opacity 1s ease-in-out;
+    z-index: 40;
   }
 
   #fraseSurpresa {
@@ -100,12 +103,150 @@
     font-size: 28px;
     color: #ffb6e6;
     margin-top: 20px;
+    z-index: 50;
   }
 
   .heart {
     position: absolute;
     bottom: -20px;
-    a
+    animation: float 8s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes float {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-110vh); opacity: 0; }
+  }
+</style>
+</head>
+
+<body>
+
+<div id="start" onclick="startApp()">
+  💖 Toque para começar 💖
+</div>
+
+<div id="content">
+  <img id="foto" src="foto1.jpg">
+  <div id="final"></div>
+  <button id="botaoSurpresa" onclick="mostrarSurpresa()">Clique aqui para a surpresa 💖</button>
+  <img id="fotoSurpresa" src="fotoSurpresa.jpg">
+  <div id="fraseSurpresa">Ansioso para esse dia</div>
+</div>
+
+<audio id="music">
+  <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  const totalFotos = 6;
+  const tempoFoto = 3500;
+  const frase = "Você é minha vida, eu te amo!";
+  let index = 1;
+  let fotosInterval;
+  let fraseMostrada = false;
+
+  // Pré-carregamento de imagens
+  for (let i=1;i<=totalFotos;i++){
+    const img = new Image();
+    img.src = `foto${i}.jpg`;
+  }
+  const imgSurpresa = new Image();
+  imgSurpresa.src = "fotoSurpresa.jpg";
+
+  function startApp(){
+    document.getElementById("start").style.display="none";
+    document.getElementById("content").style.display="block";
+
+    iniciarMusica();
+    iniciarFotos();
+    iniciarCoracoesAutomaticos();
+  }
+
+  function iniciarMusica(){
+    const audio=document.getElementById("music");
+    audio.currentTime=23;
+    audio.volume=1;
+    audio.play().catch(()=>{console.log("Toque necessário para liberar áudio");});
+    // Música continua tocando
+  }
+
+  function iniciarFotos(){
+    const img=document.getElementById("foto");
+    img.classList.add("show");
+    fotosInterval=setInterval(()=>{
+      index++;
+      if(index<=totalFotos){
+        img.classList.remove("show");
+        setTimeout(()=>{
+          img.src=`foto${index}.jpg`;
+          img.classList.add("show");
+        },500);
+      } else {
+        clearInterval(fotosInterval);
+        mostrarFrase();
+        efeitoFinal();
+      }
+    },tempoFoto);
+  }
+
+  function mostrarFrase(){
+    if(fraseMostrada) return;
+    fraseMostrada=true;
+    const el=document.getElementById("final");
+    el.style.display="block";
+    let i=0;
+    const typing=setInterval(()=>{
+      el.innerHTML+=frase.charAt(i);
+      i++;
+      if(i>=frase.length){
+        clearInterval(typing);
+        // Mostrar botão surpresa
+        document.getElementById("botaoSurpresa").style.display="inline-block";
+      }
+    },80);
+  }
+
+  // Corações automáticos
+  function iniciarCoracoesAutomaticos(){
+    setInterval(()=>criarCoracao(Math.random()*window.innerWidth,window.innerHeight),600);
+  }
+
+  document.addEventListener("click",(e)=>{criarCoracao(e.clientX,e.clientY);});
+
+  function criarCoracao(x,y){
+    const heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="❤️";
+    heart.style.left=x+"px";
+    heart.style.top=y+"px";
+    heart.style.fontSize=(16+Math.random()*24)+"px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),8000);
+  }
+
+  function efeitoFinal(){
+    for(let i=0;i<20;i++){
+      setTimeout(()=>{criarCoracao(Math.random()*window.innerWidth,window.innerHeight);},i*150);
+    }
+  }
+
+  function mostrarSurpresa(){
+    const botao=document.getElementById("botaoSurpresa");
+    const foto=document.getElementById("fotoSurpresa");
+    const fraseSurpresa=document.getElementById("fraseSurpresa");
+    botao.style.display="none";
+    foto.style.display="block";
+    fraseSurpresa.style.display="block";
+    foto.style.opacity=0;
+    setTimeout(()=>foto.style.opacity=1,50);
+  }
+</script>
+
+</body>
+</html>
+
 
 
 
