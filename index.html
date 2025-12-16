@@ -3,79 +3,115 @@
 <head>
 <meta charset="UTF-8">
 <title>Para Você ❤️</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Para Você ❤️">
-<link rel="apple-touch-icon" href="icon.png">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body {
-  margin: 0;
-  height: 100vh;
-  background: linear-gradient(180deg,#0a0a0a,#20001a);
-  color:#fff;
-  font-family: Arial, sans-serif;
-  text-align:center;
-  overflow:hidden;
-  position:relative;
+  body {
+    margin:0;
+    height:100vh;
+    background: linear-gradient(180deg,#0a0a0a,#20001a);
+    color:#fff;
+    font-family: Arial, sans-serif;
+    text-align:center;
+    overflow:hidden;
+    position:relative;
+  }
+  #start {
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:28px;
+    cursor:pointer;
+    background:rgba(0,0,0,0.6);
+    z-index:100;
+    position:relative;
+    border-radius:20px;
+    padding:20px 40px;
+  }
+  #content { display:none; padding-top:40px; position:relative; z-index:10; }
+  img { width:85%; max-width:340px; max-height:60vh; object-fit:contain; border-radius:20px; opacity:0; transition:opacity 1.5s ease-in-out; }
+  img.show { opacity:1; }
+  #final { display:none; font-size:26px; margin:40px 20px; color:#ffb6e6; min-height:60px; }
+  #botaoSurpresa { display:none; padding:12px 20px; font-size:20px; border:none; border-radius:15px; background:#ff69b4; color:white; cursor:pointer; margin-top:20px; z-index:50; position:relative; }
+  #fotoSurpresa { display:none; width:80%; max-width:350px; margin-top:20px; border-radius:20px; opacity:0; transition:opacity 1s; }
+  #fraseSurpresa { display:none; font-family:'Brush Script MT', cursive; font-size:28px; color:#ffb6e6; margin-top:20px; }
+  .heart { position:absolute; bottom:-20px; animation:float 8s linear infinite; pointer-events:none; z-index:1; }
+  @keyframes float { from{transform:translateY(0);opacity:1} to{transform:translateY(-110vh);opacity:0} }
+</style>
+</head>
+<body>
+
+<div id="start" onclick="startApp()">💖 Toque para começar 💖</div>
+
+<div id="content">
+  <img id="foto" src="foto1.jpg">
+  <div id="final"></div>
+  <button id="botaoSurpresa" onclick="mostrarSurpresa()">Clique aqui para a surpresa 💖</button>
+  <img id="fotoSurpresa" src="fotoSurpresa.jpg">
+  <div id="fraseSurpresa">Ansioso para esse dia</div>
+</div>
+
+<audio id="music"></audio>
+
+<script>
+const totalFotos=6;
+const tempoFoto=3500;
+const frase="Você é minha vida, eu te amo!";
+let index=1;
+let fotosInterval;
+let fraseMostrada=false;
+
+// Pré-carregamento das imagens
+for(let i=1;i<=totalFotos;i++){ new Image().src=`foto${i}.jpg`; }
+new Image().src="fotoSurpresa.jpg";
+
+function startApp(){
+  document.getElementById("start").style.display="none";
+  document.getElementById("content").style.display="block";
+  iniciarMusica();
+  iniciarFotos();
+  iniciarCoracoes();
 }
 
-#start {
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:28px;
-  cursor:pointer;
-  animation:pulse 2s infinite;
-  position:relative;
-  z-index:100;
+function iniciarMusica(){
+  const audio=document.getElementById("music");
+  audio.src="musica.mp3";
+  audio.currentTime=23;
+  audio.play().catch(()=>console.log("Toque necessário para liberar áudio"));
 }
 
-@keyframes pulse {0%{opacity:0.4}50%{opacity:1}100%{opacity:0.4}}
-
-#content {display:none; padding-top:40px; position:relative; z-index:10;}
-
-img {
-  width:85%;
-  max-width:340px;
-  max-height:60vh;
-  object-fit:contain;
-  border-radius:20px;
-  box-shadow:0 0 25px rgba(255,0,150,0.5);
-  opacity:0;
-  transition:opacity 1.5s ease-in-out;
+function iniciarFotos(){
+  const img=document.getElementById("foto");
+  img.classList.add("show");
+  fotosInterval=setInterval(()=>{
+    index++;
+    if(index<=totalFotos){
+      img.classList.remove("show");
+      setTimeout(()=>{ img.src=`foto${index}.jpg`; img.classList.add("show"); },500);
+    } else {
+      clearInterval(fotosInterval);
+      mostrarFrase();
+      efeitoFinal();
+    }
+  },tempoFoto);
 }
 
-img.show {opacity:1;}
-
-#final {display:none; font-size:26px; margin:40px 20px; color:#ffb6e6; min-height:60px;}
-
-#botaoSurpresa {
-  display:none;
-  padding:12px 20px;
-  font-size:20px;
-  border:none;
-  border-radius:15px;
-  background:#ff69b4;
-  color:white;
-  cursor:pointer;
-  margin-top:20px;
-  box-shadow:0 0 15px rgba(255,105,180,0.7);
-  z-index:50;
-  position:relative;
-  pointer-events:auto;
+function mostrarFrase(){
+  if(fraseMostrada) return;
+  fraseMostrada=true;
+  const el=document.getElementById("final");
+  el.style.display="block";
+  let i=0;
+  const typing=setInterval(()=>{
+    el.innerHTML+=frase.charAt(i);
+    i++;
+    if(i>=frase.length){ clearInterval(typing); document.getElementById("botaoSurpresa").style.display="inline-block"; }
+  },80);
 }
 
-#fotoSurpresa {
-  display:none;
-  width:80%;
-  max-width:350px;
-  margin-top:20px;
-  border-radius:20px;
-  box-shadow:0 0 25px rgba(255,0,150,0.5);
-  transition:opacity
+function iniciarCoracoes(){
+  setInterval(()=>criarCora
+
 
 
 
