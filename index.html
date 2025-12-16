@@ -2,33 +2,46 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Teste Música</title>
+<title>Para Você ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body { margin:0; height:100vh; display:flex; justify-content:center; align-items:center; background:#000; color:#fff; font-size:30px; flex-direction:column; }
-#start { cursor:pointer; padding:20px 40px; background:#ff69b4; border-radius:20px; }
-#content { display:none; margin-top:20px; font-size:24px; text-align:center; color:#fff; }
+body {
+  margin:0;
+  height:100vh;
+  background: linear-gradient(180deg,#0a0a0a,#20001a);
+  color:#fff;
+  font-family: Arial, sans-serif;
+  text-align:center;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+}
+#start {
+  cursor:pointer;
+  padding:20px 40px;
+  background:#ff69b4;
+  border-radius:20px;
+  font-size:28px;
+  z-index:100;
+  position:relative;
+}
+#content { display:none; position:relative; z-index:10; padding-top:20px; }
+img { width:85%; max-width:340px; max-height:60vh; object-fit:contain; border-radius:20px; opacity:0; transition:opacity 1.5s ease-in-out; }
+img.show { opacity:1; }
+#final { display:none; font-size:26px; margin:20px; color:#ffb6e6; min-height:60px; }
+#botaoSurpresa { display:none; padding:12px 20px; font-size:20px; border:none; border-radius:15px; background:#ff69b4; color:white; cursor:pointer; margin-top:20px; z-index:50; position:relative; }
+#fotoSurpresa { display:none; width:80%; max-width:350px; margin-top:20px; border-radius:20px; opacity:0; transition:opacity 1s; }
+#fraseSurpresa { display:none; font-family:'Brush Script MT',cursive; font-size:28px; color:#ffb6e6; margin-top:20px; }
+.heart { position:absolute; bottom:-20px; animation:float 8s linear infinite; pointer-events:none; z-index:1; }
+@keyframes float { from{transform:translateY(0);opacity:1} to{transform:translateY(-110vh);opacity:0} }
 </style>
 </head>
 <body>
 
-<div id="start" onclick="startApp()">💖 Toque para começar 💖</div>
-<div id="content">Música iniciada!</div>
+<di
 
-<audio id="music" src="musica.mp3"></audio>
-
-<script>
-function startApp(){
-  document.getElementById("start").style.display="none";
-  document.getElementById("content").style.display="block";
-
-  const audio = document.getElementById("music");
-  audio.currentTime = 23; // começa do segundo 23
-  audio.play().catch(() => console.log("Toque necessário para liberar áudio"));
-}
-</script>
-
-</body>
-</html>
 
 
 
