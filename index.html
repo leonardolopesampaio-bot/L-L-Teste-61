@@ -4,9 +4,14 @@
 <meta charset="UTF-8">
 <title>Para Você ❤️</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
 <style>
   body {
     margin: 0;
+    height: 100vh;
     background: linear-gradient(180deg, #0a0a0a, #20001a);
     color: #fff;
     font-family: Arial, sans-serif;
@@ -22,8 +27,6 @@
     font-size: 28px;
     cursor: pointer;
     animation: pulse 2s infinite;
-    z-index: 10;
-    position: relative;
   }
 
   @keyframes pulse {
@@ -35,8 +38,6 @@
   #content {
     display: none;
     padding-top: 40px;
-    position: relative;
-    z-index: 5;
   }
 
   img {
@@ -60,24 +61,16 @@
     min-height: 60px;
   }
 
-  /* Corações */
   .heart {
     position: absolute;
     bottom: -20px;
     font-size: 20px;
-    color: rgba(255, 105, 180, 0.8);
     animation: float 8s linear infinite;
   }
 
   @keyframes float {
-    from {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    to {
-      transform: translateY(-110vh);
-      opacity: 0;
-    }
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-110vh); opacity: 0; }
   }
 </style>
 </head>
@@ -102,6 +95,8 @@
   const totalFotos = 6;
   const tempoFoto = 3500;
   const frase = "Você é minha vida, eu te amo!";
+  let fotosInterval;
+  let fraseMostrada = false;
 
   function startApp() {
     document.getElementById("start").style.display = "none";
@@ -118,7 +113,6 @@
     audio.volume = 0;
     audio.play();
 
-    // Fade-in da música
     let vol = 0;
     const fade = setInterval(() => {
       if (vol < 1) {
@@ -134,7 +128,7 @@
     const img = document.getElementById("foto");
     img.classList.add("show");
 
-    setInterval(() => {
+    fotosInterval = setInterval(() => {
       index++;
       if (index <= totalFotos) {
         img.classList.remove("show");
@@ -143,12 +137,16 @@
           img.classList.add("show");
         }, 500);
       } else {
+        clearInterval(fotosInterval);
         mostrarFrase();
       }
     }, tempoFoto);
   }
 
   function mostrarFrase() {
+    if (fraseMostrada) return;
+    fraseMostrada = true;
+
     const el = document.getElementById("final");
     el.style.display = "block";
     let i = 0;
@@ -169,12 +167,11 @@
       heart.style.fontSize = (14 + Math.random() * 20) + "px";
       document.body.appendChild(heart);
 
-      setTimeout(() => {
-        heart.remove();
-      }, 8000);
+      setTimeout(() => heart.remove(), 8000);
     }, 600);
   }
 </script>
 
 </body>
 </html>
+
